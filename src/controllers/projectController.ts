@@ -12,6 +12,40 @@ export const getProjects = async (
 
     res.json(projects);
   } catch (error) {
+    if (error instanceof Error) {
+      res
+        .status(500)
+        .json({ error: `Error retrieving projects: ${error.message}` });
+    }
+
     res.status(500).json({ error: 'Error retrieving projects' });
+  }
+};
+
+export const createProject = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { name, description, startDate, endDate } = req.body;
+
+  try {
+    const project = await prisma.project.create({
+      data: {
+        name,
+        description,
+        startDate,
+        endDate,
+      },
+    });
+
+    res.status(201).json(project);
+  } catch (error) {
+    if (error instanceof Error) {
+      res
+        .status(500)
+        .json({ error: `Error creating project: ${error.message}` });
+    }
+
+    res.status(500).json({ error: 'Error creating project' });
   }
 };
