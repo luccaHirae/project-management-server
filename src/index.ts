@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 /* route imports */
+import projectRoutes from './routes/projectRoutes';
 
 /* config */
 dotenv.config();
@@ -26,6 +27,7 @@ app.use(cors());
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
+app.use('/projects', projectRoutes);
 
 /* server */
 const PORT = process.env.PORT || 8080;
