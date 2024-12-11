@@ -177,3 +177,39 @@ delete the server
 ```bash
 pm2 delete {name}
 ```
+
+add database environment variables (first method)
+
+```bash
+echo "DATABASE_URL={database_url}" >> .env
+```
+
+add database environment variables (second method)
+
+```bash
+nano .env
+```
+
+add the following environment variables
+
+```bash
+DATABASE_URL="postgresql://{username}:{password}@{hostname}:{port}/{database}?schema={schema}"
+```
+
+save the environment variables
+
+```bash
+ctrl + x
+```
+
+generate prisma
+
+```bash
+npx prisma generate
+```
+
+migrate the database
+
+```bash
+npx prisma migrate dev
+```
