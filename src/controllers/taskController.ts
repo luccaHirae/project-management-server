@@ -104,3 +104,39 @@ export const updateTaskStatus = async (
     res.status(500).json({ error: 'Error updating task status' });
   }
 };
+
+export const getUserTasks = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { userId } = req.params;
+
+    const tasks = await prisma.task.findMany({
+      where: {
+        OR: [
+          {
+            authorUserId: Number(userId),
+          },
+          {
+            assignedUserId: Number(userId),
+          },
+        ],
+      },
+      include: {
+        author: true,
+        assignee: true,
+      },
+    });
+
+    res.json(tasks);
+  } catch (error) {
+    if (error instanceof Error) {
+      res
+        .status(500)
+        .json({ error: `Error retrieving user tasks: ${error.message}` });
+    }
+
+    res.status(500).json({ error: 'Error retrieving user tasks' });
+  }
+};
