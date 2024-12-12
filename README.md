@@ -214,7 +214,7 @@ migrate the database
 npx prisma migrate dev
 ```
 
-### Automatic pull changes from the repository on EC2
+### Pulling changes from Github to EC2
 
 create a Github workflow file
 
@@ -222,13 +222,7 @@ create a Github workflow file
 touch .github/workflows/{name}.yml
 ```
 
-open the Github workflow file
-
-```bash
-nano .github/workflows/{name}.yml
-```
-
-add the following Github workflow file
+add the following content
 
 ```bash
 name: {name}
