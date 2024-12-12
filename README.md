@@ -213,3 +213,51 @@ migrate the database
 ```bash
 npx prisma migrate dev
 ```
+
+### Automatic pull changes from the repository on EC2
+
+create a Github workflow file
+
+```bash
+touch .github/workflows/{name}.yml
+```
+
+open the Github workflow file
+
+```bash
+nano .github/workflows/{name}.yml
+```
+
+add the following Github workflow file
+
+```bash
+name: {name}
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy to EC2
+        if: github.ref == 'refs/heads/main'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            cd {repository}
+            git pull
+            npm install
+            pm2 restart {name}
+```
